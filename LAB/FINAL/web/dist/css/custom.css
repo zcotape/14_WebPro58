@@ -1,0 +1,16 @@
+@import "fonts.css";
+
+.container {
+    margin-top: 10px;
+}
+.header-top {
+    margin-top: 55px;
+}
+
+.archieve-count {
+    font-size: 3em;
+}
+
+.navbar-toggle {
+    border: 0px solid transparent;
+}

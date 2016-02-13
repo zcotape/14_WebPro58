@@ -1,12 +1,9 @@
-package Database;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Created by earthz on 2/5/16.
- */
 public class DatabaseConnection {
 
     private static DatabaseConnection thisInstance = new DatabaseConnection();
