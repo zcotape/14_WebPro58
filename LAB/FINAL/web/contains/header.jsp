@@ -16,5 +16,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="dist/css/custom.css">
 
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .datepicker{z-index:1151 !important;}
+    </style>
+
 </head>
 <body>

@@ -1,6 +1,6 @@
 package controller;
 
-import guide.RouteGuide;
+import guide.Guide;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -24,12 +24,12 @@ public class AuthenticationFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
-        if(filterConfig == null) {
+        if (filterConfig == null) {
             return;
         }
 
-        HttpServletRequest request = (HttpServletRequest)req;
-        HttpServletResponse response = (HttpServletResponse)resp;
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
 
         String uri = request.getRequestURI();
         HttpSession session = request.getSession();
@@ -37,16 +37,16 @@ public class AuthenticationFilter implements Filter {
         /**
          * Bypass contains file path
          */
-        if(uri.contains("/dist/")) {
+        if (uri.contains("/dist/")) {
             chain.doFilter(req, resp);
             return;
         }
 
 
-        if((session == null || session.getAttribute("user") == null) && !(uri.endsWith("auth"))) {
-            response.sendRedirect(RouteGuide.getURL(request, "auth"));
+        if ((session == null || session.getAttribute("username") == null) && !(uri.endsWith("auth"))) {
+            response.sendRedirect(Guide.getRoute(request, "auth"));
             return;
-        } else if(!(session == null || session.getAttribute("user") == null) && uri.endsWith("login")) {
+        } else if (!(session == null || session.getAttribute("username") == null) && uri.endsWith("login")) {
             response.sendRedirect("./");
             return;
         }
