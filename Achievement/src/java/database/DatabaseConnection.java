@@ -14,7 +14,7 @@ public class DatabaseConnection {
             MysqlDataSource dataSource = new MysqlDataSource();
             dataSource.setUser("it_14");
             dataSource.setPassword("7xdTD2Uv");
-            dataSource.setUrl("jdbc:mysql://database.it.kmitl.ac.th:3306/it_14?autoReconnect=true");
+            dataSource.setUrl("jdbc:mysql://database.it.kmitl.ac.th:3306/it_14?autoReconnect=true&characterEncoding=UTF-8");
 
             connection = dataSource.getConnection();
         } catch (Exception e) {

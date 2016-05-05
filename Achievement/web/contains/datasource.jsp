@@ -26,15 +26,3 @@
 <sql:query var="query_achievement_count" dataSource="${dataSource}">
     SELECT COUNT(id) as count FROM achievements;
 </sql:query>
-
-<sql:query var="query_organization_name" dataSource="${dataSource}">
-    SELECT id, organization_name FROM organizations;
-</sql:query>
-
-<sql:query var="query_teacher_name" dataSource="${dataSource}">
-    SELECT teacher_id, th_prename, th_name FROM teacher;
-</sql:query>
-
-<sql:query var="query_student_name" dataSource="${dataSource}">
-    SELECT student_id, th_name FROM student;
-</sql:query>

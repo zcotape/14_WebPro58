@@ -4,53 +4,61 @@
 
 <%@ include file="contains/navbar.jsp" %>
 
+<%@ include file="contains/datasource.jsp" %>
+
+<sql:query var="query_organization_name" dataSource="${dataSource}">
+    SELECT id, organization_name FROM organizations;
+</sql:query>
+
 <div class="container header-top">
     <div class="page-header">
         <h1>Certificate | ลงทะเบียนการแข่งขัน</h1>
     </div>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">ส่วนอื่นๆ</h3>
+                <h3 class="panel-title">รายละเอียด</h3>
             </div>
             <div class="panel-body">
                 <div class="form-group">
                     <label class="control-label">ชื่อผลงาน</label>
-                    <input type="text" class="form-control" name="reward_name">
+                    <input type="text" class="form-control" name="achievement_name">
                 </div>
                 <div class="form-group">
                     <label class="control-label">หน่วยงานที่จัด</label>
-                    <select class="form-control" name="organization_name">
-                        <option>เลือกหน่วยงานที่จัด</option>
+                    <select class="form-control" name="organization_id">
+                        <option value="0">เลือกหน่วยงานที่จัด</option>
                         <c:forEach var="list" items="${query_organization_name.rows}">
                             <option value="${list.id}">${list.organization_name}</option>
                         </c:forEach>
                     </select>
                 </div>
                 <div class="form-group">
+                    <div class="form-group">
+                        <label class="control-label">ถ้าไม่มีเลือก ให้เพิ่มในช่องนี้</label>
+                        <input type="text" class="form-control" name="organization_optional_name">
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label">วันที่ออกใบประกาศ</label>
-                    <div id="publish_date" class="input-group date" data-date-format="mm-dd-yyyy">
-                        <input class="form-control" type="text" name="publish-date" readonly/>
+                    <div id="publish_date" class="input-group date" data-date-format="yyyy-mm-dd">
+                        <input class="form-control" type="text" name="publish_date" readonly/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label">วันที่ใบประกาศหมดอายุ</label>
-                    <div id="expire_date" class="input-group date" data-date-format="mm-dd-yyyy">
-                        <input class="form-control" type="text" readonly name="expire-date"/>
+                    <div id="expire_date" class="input-group date" data-date-format="yyyy-mm-dd">
+                        <input class="form-control" type="text" readonly name="expire_date"/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Upload your file</label>
                     <input type="file" name="certificate_file">
-                    <p class="help-block">We recommend you upload with .pdf file(s). <br> If you
-                        have multiple file, please zip before uploaded.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                    </button>
-                    <button type="submit" class="btn btn-primary" name="action" value="certificate">Update
+                    <button type="submit" class="btn btn-primary">Update
                     </button>
                 </div>
             </div>

@@ -21,7 +21,6 @@ public class AuthenticationFilter implements Filter {
         this.filterConfig = null;
     }
 
-
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
         if (filterConfig == null) {
@@ -41,20 +40,33 @@ public class AuthenticationFilter implements Filter {
             chain.doFilter(req, resp);
             return;
         }
+        
+        if (uri.endsWith("/")) {
+            chain.doFilter(req, resp);
+            return;
+        }
+        
+        if (uri.contains("/guest")) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
-
-        if ((session == null || session.getAttribute("username") == null) && !(uri.endsWith("auth"))) {
+        /*if ((session == null || session.getAttribute("username") == null) && !(uri.endsWith("auth"))) {
             response.sendRedirect(Guide.getRoute(request, "auth"));
             return;
         } else if (!(session == null || session.getAttribute("username") == null) && uri.endsWith("login")) {
             response.sendRedirect("./");
+            return;
+        }*/
+        
+        if ((session == null || session.getAttribute("username") == null) && !(uri.endsWith("auth"))) {
+            response.sendRedirect(Guide.getRoute(request, "auth"));
             return;
         }
 
         chain.doFilter(req, resp);
 
     }
-
 
     public void init(FilterConfig config) throws ServletException {
         this.filterConfig = config;

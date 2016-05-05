@@ -1,18 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import database.DatabaseConnection;
+import guide.Guide;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -20,22 +17,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import model.personal.AchievementUtilities;
-import model.portfolio.Portfolio;
-import model.portfolio.PortfolioUtilities;
+import model.utilities.AchievementUtilities;
 
-/**
- *
- * @author earthz
- */
 @WebServlet(name = "CompletitionServlet", urlPatterns = {"/register.completition"})
 @MultipartConfig(maxFileSize = 999999999) // config file size 
 public class CompletitionServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Achievement Description
-        String achievement_name = request.getParameter("achievement_name"); //    
-        String publish_date = request.getParameter("publish-date");
+        String achievement_name = request.getParameter("achievement_name"); //
+        String publish_date = request.getParameter("publish_date");
         String reward = request.getParameter("reward");
         String category = request.getParameter("category");
         Integer achievement_type = 1;
@@ -89,7 +80,30 @@ public class CompletitionServlet extends HttpServlet {
                 level = null;
                 break;
         }
+        switch (category) {
+            case "1":
+                category = "วิชาการ (เดี่ยว)";
+                break;
+            case "2":
+                category = "วิชาการ (ทีม)";
+                break;
+            case "3":
+                category = "คุณธรรม จริยธรรม";
+                break;
+            default:
+                category = null;
+                break;
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+//        String publish_date_pm = request.getParameter("publish_date");
 
+        // Declare java.sql.Date to insert into database
+//        java.sql.Date publish_date = null;
+//        try {
+//            publish_date = new java.sql.Date(format.parse(publish_date_pm).getTime());
+//        } catch (ParseException ex) {
+//            Logger.getLogger(CertificateServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         // Student Description
         String student = request.getParameter("co_student");
 
@@ -97,11 +111,16 @@ public class CompletitionServlet extends HttpServlet {
         String advisor = request.getParameter("advisor");
 
         // Organization Description
+  
         Integer organization_id = Integer.parseInt(request.getParameter("organization_name"));
 
+        
+        
+
         // Optional Description
-        String organization_optional = request.getParameter("organization_optional");
-        String rank_optional = request.getParameter("rank_optional");
+        String organization_optional = request.getParameter("organization_optional_name");
+
+        System.out.println(organization_optional);
 
         // Declare to get a file
         if (competition_file != null) {
@@ -110,16 +129,17 @@ public class CompletitionServlet extends HttpServlet {
 
         // Insert to Achievement Table
         try {
-            String sql_command = "INSERT INTO achievements (achievement_name, photo, reward, category, achievement_type)"
-                    + "VALUES (?, ?, ?, ?, ?) ";
+            String sql_command = "INSERT INTO achievements (achievement_name, photo, date, reward, category, achievement_type, created_at, updated_at)"
+                    + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW()) ";
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setString(1, achievement_name);
             if (inputStream != null) {
                 statement.setBlob(2, inputStream);
             }
-            statement.setString(3, reward);
-            statement.setString(4, category);
-            statement.setInt(5, achievement_type);
+            statement.setString(3, publish_date);
+            statement.setString(4, reward);
+            statement.setString(5, category);
+            statement.setInt(6, achievement_type);
 
             statement.executeUpdate();
         } catch (Exception e) {
@@ -135,7 +155,7 @@ public class CompletitionServlet extends HttpServlet {
             statement.setString(3, level);
             statement.setString(4, rank);
             statement.setInt(5, AchievementUtilities.getAchievementID(achievement_name));
-            
+
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -147,7 +167,7 @@ public class CompletitionServlet extends HttpServlet {
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setString(1, student);
             statement.setInt(2, AchievementUtilities.getAchievementID(achievement_name));
-            
+
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,23 +179,40 @@ public class CompletitionServlet extends HttpServlet {
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setString(1, advisor);
             statement.setInt(2, AchievementUtilities.getAchievementID(achievement_name));
-            
+
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert to organization_achievement table
+        if (organization_optional != null) {
+            try {
+                String sql_command = "INSERT INTO organizations (organization_name) VALUES (?)";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, organization_optional);
+
+                statement.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            String sql_command = "INSERT INTO organization_achievement (achievement_id, organization_id) VALUES (?, ?)";
+            PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+            statement.setInt(1, AchievementUtilities.getAchievementID(achievement_name));
+            if(organization_id != 0 && organization_optional == null){
+                statement.setInt(2, organization_id);
+
+            } else {
+                statement.setInt(2, AchievementUtilities.getOrganizationID(organization_optional));
+            }
             statement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        // Insert to organization_achievement table
-        try {
-            String sql_command = "INSERT INTO organization_achievement (achievement_id, organization_id) VALUES (?, ?)";
-            PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-            statement.setInt(1, AchievementUtilities.getAchievementID(achievement_name));
-            statement.setInt(2, organization_id);
-            
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        response.sendRedirect(Guide.getRoute(request, "achievement.manager"));
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @WebServlet(name = "AuthenticationServlet", urlPatterns = "/auth")
 public class AuthenticationServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -77,10 +78,8 @@ public class AuthenticationServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
         }
 
-
         response.sendRedirect(Guide.getRoute(request, "dashboard"));
     }
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

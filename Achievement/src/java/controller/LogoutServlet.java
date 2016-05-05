@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet(name = "LogoutServlet", urlPatterns = "/logout")
 public class LogoutServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -20,9 +21,9 @@ public class LogoutServlet extends HttpServlet {
         if (request.getSession().getAttribute("username") != null) {
             HttpSession session = request.getSession();
             session.invalidate();
-            response.sendRedirect(Guide.getRoute(request, "auth"));
+            response.sendRedirect(Guide.getRoute(request, ""));
         } else {
-            response.sendRedirect(Guide.getRoute(request, "auth"));
+            response.sendRedirect(Guide.getRoute(request, ""));
         }
     }
 }

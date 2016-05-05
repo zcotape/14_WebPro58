@@ -4,6 +4,8 @@
 <%@ include file="contains/navbar.jsp" %>
 <%@ include file="contains/datasource.jsp" %>
 
+<% String username = session.getAttribute("username").toString();%>
+
 <div class="container header-top">
     <div class="page-header">
         <h1>Welcome
@@ -17,6 +19,19 @@
 </div>
 
 <% if (session.getAttribute("role").equals("student")) {%>
+<sql:query var="query_student_achievement_count" dataSource="${dataSource}">
+    SELECT COUNT(achievement_id) as count FROM student_achievement WHERE student_id = '<%= username%>';
+</sql:query>
+
+<sql:query var="query_student_achievement" dataSource="${dataSource}">
+    SELECT achievements.id,
+    achievements.achievement_name 
+    FROM student_achievement
+    JOIN achievements
+    ON (student_achievement.achievement_id = achievements.id)
+    WHERE student_id = '<%= username %>'
+    GROUP BY achievements.id;
+</sql:query>
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-md-6">
@@ -50,29 +65,29 @@
                     <table class="table">
                         <tr>
                             <td>#</td>
-                            <td>Archive Name</td>
+                            <td>Achievement Name</td>
                             <td>Action</td>
                         </tr>
-                        <c:forEach var="list" items="${queryPortfolio.rows}">
+                        <c:forEach var="list" items="${query_student_achievement.rows}">
                             <tr>
-                                <td><c:out value="${list.arch_id}"/></td>
-                                <td><c:out value="${list.arch_name}"/></td>
+                                <td><c:out value="${list.id}"/></td>
+                                <td><c:out value="${list.achievement_name}"/></td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="...">
                                         <button type="button" class="btn btn-default" data-toggle="modal"
-                                                data-target=".edit" name="edit" data-id="${list.arch_id}"
-                                                data-name="${list.arch_name}">Edit
+                                                data-target=".edit" name="edit" data-id="${list.id}"
+                                                data-name="${list.achievement_name}">Edit
                                         </button>
                                         <button type="button" class="btn btn-default" data-toggle="modal"
-                                                data-target=".drop" name="drop" data-id="${list.arch_id}"
-                                                data-name="${list.arch_name}">Drop
+                                                data-target=".drop" name="drop" data-id="${list.id}"
+                                                data-name="${list.achievement_name}">Drop
                                         </button>
                                     </div>
                                 </td>
                             </tr>
                         </c:forEach>
                     </table>
-                    <form action="portfolio.action" method="post">
+                    <form action="achievement.action" method="post">
                         <div class="modal fade edit" tabindex="-1" role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -131,124 +146,14 @@
         </div>
     </div>
 </div>
-
-<% } else if (session.getAttribute("role").equals("staff")) {%>
-
-<% } else { %>
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Registered Portfolio in System</h3>
-                </div>
-                <div class="panel-body">
-                    <p class="archieve-count">
-                        <c:forEach var="list" items="${queryCountAll.rows}">
-                            <c:choose>
-                                <c:when test="${list.count == 1}">
-                                    Only ${list.count} Portfolio
-                                </c:when>
-                                <c:otherwise>
-                                    ${list.count} Portfolios
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Result</h3>
-                </div>
-                <div class="list-group">
-                    <table class="table">
-                        <tr>
-                            <td>#</td>
-                            <td>Archive Name</td>
-                            <td>Action</td>
-                        </tr>
-                        <c:forEach var="list" items="${queryAll.rows}">
-                            <tr>
-                                <td><c:out value="${list.arch_id}"/></td>
-                                <td><c:out value="${list.arch_name}"/></td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="...">
-                                        <button type="button" class="btn btn-default" data-toggle="modal"
-                                                data-target=".edit" name="edit" data-id="${list.arch_id}"
-                                                data-name="${list.arch_name}">Edit
-                                        </button>
-                                        <button type="button" class="btn btn-default" data-toggle="modal"
-                                                data-target=".drop" name="drop" data-id="${list.arch_id}"
-                                                data-name="${list.arch_name}">Drop
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                    <form action="portfolio.action" method="post">
-                        <div class="modal fade edit" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"><span
-                                                aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">You are editing <code></code></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <input type="hidden" class="form-control" name="edit_id">
-                                        <div class="form-group">
-                                            <label for="portID" class="control-label">Portfolio ID:</label>
-                                            <input type="text" class="form-control" id="portID" disabled>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="portName" class="control-label">Portfolio Name:</label>
-                                            <input type="text" class="form-control" id="portName">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                        </button>
-                                        <button type="submit" class="btn btn-primary" name="action" value="edit">Update
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade drop" tabindex="-1" role="dialog">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"><span
-                                                aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">You are dropping <code></code></h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <input type="hidden" class="form-control" name="drop_id">
-                                        <p>Be careful, you cannot undo this process when you confirmed!!!</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                                        </button>
-                                        <button type="submit" class="btn btn-primary" name="action" value="drop">Drop it
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <% } %>
+<footer class="footer">
+    <div class="container">
+        <h3>ติดต่อเรา</h3>
+        <p>คณะเทคโนโลยีสารสนเทศ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</p>
+        <p class="text-muted" href="//www.it.kmitl.ac.th">www.it.kmitl.ac.th</p>
+    </div>
+</footer>
 
 <!-- jQuery first, then Bootstrap JS. -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

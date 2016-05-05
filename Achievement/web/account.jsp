@@ -67,7 +67,7 @@
                        readonly>
             </div>
         </div>
-            <% if (session.getAttribute("role").equals("teacher")) { %>
+        <% if (session.getAttribute("role").equals("teacher")) { %>
         <div class="form-group">
             <label class="col-sm-2 control-label">คำนำหน้า</label>
             <div class="col-sm-10">
@@ -75,7 +75,7 @@
                        readonly>
             </div>
         </div>
-            <% } %>
+        <% } %>
         <div class="form-group">
             <label class="col-sm-2 control-label">ชื่อ นามสกุล</label>
             <div class="col-sm-10">
@@ -83,7 +83,7 @@
                        readonly>
             </div>
         </div>
-            <% if (session.getAttribute("role").equals("teacher")) { %>
+        <% if (session.getAttribute("role").equals("teacher")) { %>
         <div class="form-group">
             <label class="col-sm-2 control-label">คำนำหน้าชื่อ (English)</label>
             <div class="col-sm-10">
@@ -91,7 +91,7 @@
                        readonly>
             </div>
         </div>
-            <% } %>
+        <% } %>
         <div class="form-group">
             <label class="col-sm-2 control-label">ชื่อ นามสกุล (English)</label>
             <div class="col-sm-10">

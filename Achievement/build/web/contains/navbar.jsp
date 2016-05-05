@@ -33,22 +33,20 @@
                        aria-expanded="false">Welcome, <%out.print(session.getAttribute("th_name")); %> <span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<% out.print(Guide.getRoute(request, "dashboard")); %>"></a></li>
-                        <li><a href="<% out.print(Guide.getRoute(request, "account")); %>">Profile</a></li>
+                        <li><a href="<% out.print(Guide.getRoute(request, "account")); %>">ข้อมูลส่วนตัว</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="logout">Logout</a></li>
+                        <li><a href="logout">ออกจากระบบ</a></li>
                     </ul>
                     <% } else { %>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">Welcome, <% out.print(session.getAttribute("th_prename")); %><%out.print(session.getAttribute("th_name")); %> <span
-                                class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Welcome, <% out.print(session.getAttribute("th_prename")); %><%out.print(session.getAttribute("th_name")); %> <span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<% out.print(Guide.getRoute(request, "dashboard")); %>">Admin</a></li>
-                        <li><a href="<% out.print(Guide.getRoute(request, "account")); %>">Profile</a></li>
+                        <li><a href="<% out.print(Guide.getRoute(request, "account")); %>">ข้อมูลส่วนตัว</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="logout">Logout</a></li>
+                        <li><a href="logout">ออกจากระบบ</a></li>
                     </ul>
-                    <% } %>
+                    <% }%>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->

@@ -12,6 +12,7 @@ import java.io.IOException;
  */
 @WebServlet(name = "ProfileServlet", urlPatterns = "/account")
 public class ProfileServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");

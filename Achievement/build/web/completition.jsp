@@ -6,6 +6,17 @@
 
 <%@ include file="contains/datasource.jsp" %>
 
+<sql:query var="query_organization_name" dataSource="${dataSource}">
+    SELECT id, organization_name FROM organizations;
+</sql:query>
+
+<sql:query var="query_teacher_name" dataSource="${dataSource}">
+    SELECT teacher_id, th_prename, th_name FROM teacher;
+</sql:query>
+
+<sql:query var="query_student_name" dataSource="${dataSource}">
+    SELECT student_id, th_name FROM student;
+</sql:query>
 <div class="container header-top">
     <div class="page-header">
         <h1>Completition | ลงทะเบียนการแข่งขัน</h1>
@@ -81,7 +92,7 @@
                 <div class="form-group">
                     <label class="control-label">หน่วยงานที่จัด</label>
                     <select class="form-control" name="organization_name">
-                        <option>เลือกหน่วยงานที่จัด</option>
+                        <option value="0">เลือกหน่วยงานที่จัด</option>
                         <c:forEach var="list" items="${query_organization_name.rows}">
                             <option value="${list.id}">${list.organization_name}</option>
                         </c:forEach>
@@ -90,12 +101,12 @@
                 <div class="form-group">
                     <div class="form-group">
                         <label class="control-label">ถ้าไม่มีเลือก ให้เพิ่มในช่องนี้</label>
-                        <input type="text" class="form-control" name="organization_optinal_name">
+                        <input type="text" class="form-control" name="organization_optional_name">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-group">
-                        <label class="control-label">ชื่อผลงาน | Reward's Name</label>
+                        <label class="control-label">ชื่อผลงาน | Achievement's Name</label>
                         <input type="text" class="form-control" name="achievement_name">
                     </div>
                 </div>
@@ -111,10 +122,6 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">หากไม่มีให้เลือก สามารถพิมพ์ในช่องนี้ได้</label>
-                    <input type="text" class="form-control" name="rank_optional">
-                </div>
-                <div class="form-group">
                     <label class="control-label">รางวัล | Reward</label>
                     <textarea type="text" class="form-control" name="reward"></textarea>
                 </div>
@@ -127,8 +134,8 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label class="control-label">วันที่ออกใบประกาศ</label>
-                    <div id="competition_publish_date" class="input-group date" data-date-format="mm-dd-yyyy">
-                        <input class="form-control" type="text" name="publish-date" readonly/>
+                    <div id="competition_publish_date" class="input-group date" data-date-format="yyyy-mm-dd">
+                        <input class="form-control" type="text" name="publish_date" readonly/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>                    
                 </div>

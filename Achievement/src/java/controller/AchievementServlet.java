@@ -9,6 +9,7 @@ import java.io.IOException;
 
 @WebServlet(name = "AchievementServlet", urlPatterns = "/achievement.manager")
 public class AchievementServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
