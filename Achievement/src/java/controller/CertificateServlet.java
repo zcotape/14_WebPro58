@@ -24,7 +24,9 @@ import model.utilities.AchievementUtilities;
 public class CertificateServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        
         // Declare informations
         String achievement_name = request.getParameter("achievement_name");
         Integer organization_id = Integer.parseInt(request.getParameter("organization_id"));
@@ -62,6 +64,7 @@ public class CertificateServlet extends HttpServlet {
 
         // Insert to Certificate Table
         try {
+            System.out.println(AchievementUtilities.getAchievementID(achievement_name));
             String sql_command = "INSERT INTO certs (exp_date, achievement_id) VALUES (?, ?)";
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setString(1, expire_date);
@@ -85,7 +88,8 @@ public class CertificateServlet extends HttpServlet {
         }
 
        // Insert to organization_achievement table
-        if (organization_optional != null) {
+        if (!(organization_optional.length() == 0)) {
+            System.out.println("eiei" + organization_optional.length());
             try {
                 String sql_command = "INSERT INTO organizations (organization_name) VALUES (?)";
                 PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
@@ -100,7 +104,7 @@ public class CertificateServlet extends HttpServlet {
             String sql_command = "INSERT INTO organization_achievement (achievement_id, organization_id) VALUES (?, ?)";
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setInt(1, AchievementUtilities.getAchievementID(achievement_name));
-            if(organization_id != 0 && organization_optional == null){
+            if (organization_id != 0 && organization_optional.length() == 0) {
                 statement.setInt(2, organization_id);
 
             } else {

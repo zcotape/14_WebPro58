@@ -10,12 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +46,6 @@ public class DownloadExcelServlet extends HttpServlet {
 
         //Create a blank sheet
         XSSFSheet sheet = workbook.createSheet("Employee Data");
-
-        
 
         try {
             String sqlCommand = "SELECT \n"
@@ -93,15 +88,21 @@ public class DownloadExcelServlet extends HttpServlet {
 
         //This data needs to be written (Object[])
         Map<Integer, Object[]> data = new TreeMap<>();
-        
-        for (int i = 0; i < achievementList.size(); i++) {
+        data.put(0, new Object[]{
+            "นักศึกษา",
+            "ชื่องาน",
+            "ประเภท",
+            "หน่วยงานจัด",
+            "รางวัล/ประกาศ เกียรติคุณยกย่อง",
+            "วันเดือนปีที่ได้รับ"});
+        for (int i = 1; i <= achievementList.size(); i++) {
             data.put(i, new Object[]{
-                achievementList.get(i).getStudent_name(),
-                achievementList.get(i).getAchievement_name(),
-                achievementList.get(i).getCategory(),
-                achievementList.get(i).getOrganization_name(),
-                achievementList.get(i).getReward(),
-                achievementList.get(i).getDate()});
+                achievementList.get(i-1).getStudent_name(),
+                achievementList.get(i-1).getAchievement_name(),
+                achievementList.get(i-1).getCategory(),
+                achievementList.get(i-1).getOrganization_name(),
+                achievementList.get(i-1).getReward(),
+                achievementList.get(i-1).getDate()});
         }
         //Iterate over data and write to sheet
         Set<Integer> keyset = data.keySet();
@@ -125,7 +126,7 @@ public class DownloadExcelServlet extends HttpServlet {
         for (int i = 0; i < 6; i++) {
             sheet.autoSizeColumn(i);
         }
-        String file_path = getServletContext().getRealPath("/documents/") + "achievement_report_" + request.getSession().getId() + ".xlsx";
+        String file_path = getServletContext().getRealPath("/documents") + File.separator + "achievement_report_" + request.getSession().getId() + ".xlsx";
         try {
             //Write the workbook in file system
             FileOutputStream out = new FileOutputStream(new File(file_path));
@@ -134,7 +135,7 @@ public class DownloadExcelServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         response.sendRedirect(Guide.getRoute(request, "documents/achievement_report_" + request.getSession().getId() + ".xlsx"));
     }
 }

@@ -20,83 +20,79 @@ public class AchievementActionServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String edit_id = request.getParameter("edit_id");
         String drop_id = request.getParameter("drop_id");
-
         String action = request.getParameter("action");
+        
+        if ("drop".equals(action)) {
+            try {
+                String sql_command = "DELETE FROM student_achievement WHERE achievement_id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
 
-        if ("edit".equals(action)) {
-            System.out.println(edit_id + " E");
-        } else if ("drop".equals(action)) {
-           try {
-               String sql_command = "DELETE FROM student_achievement WHERE achievement_id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-           
-           try {
-               String sql_command = "DELETE FROM teacher_achievement WHERE achievement_id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-           
-           try {
-               String sql_command = "DELETE FROM organization_achievement WHERE achievement_id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-           
-           try {
-               String sql_command = "DELETE FROM competetions WHERE achievement_id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-           
-           try {
-               String sql_command = "DELETE FROM certs WHERE achievement_id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-           
-           try {
-               String sql_command = "DELETE FROM ambassadors WHERE achievement_id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
-           
-           try {
-               String sql_command = "DELETE FROM achievements WHERE id = ?";
-               PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
-               statement.setString(1, drop_id);
-               
-               statement.executeUpdate();
-           } catch (SQLException e) {
-               e.printStackTrace();
-           }
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String sql_command = "DELETE FROM teacher_achievement WHERE achievement_id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String sql_command = "DELETE FROM organization_achievement WHERE achievement_id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String sql_command = "DELETE FROM competitions WHERE achievement_id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String sql_command = "DELETE FROM certs WHERE achievement_id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String sql_command = "DELETE FROM ambassadors WHERE achievement_id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String sql_command = "DELETE FROM achievements WHERE id = ?";
+                PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
+                statement.setString(1, drop_id);
+
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         response.sendRedirect(Guide.getRoute(request, "achievement.manager"));

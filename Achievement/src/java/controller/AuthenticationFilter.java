@@ -50,6 +50,11 @@ public class AuthenticationFilter implements Filter {
             chain.doFilter(req, resp);
             return;
         }
+        
+        if (uri.contains("/content.image")) {
+            chain.doFilter(req, resp);
+            return;
+        }
 
         /*if ((session == null || session.getAttribute("username") == null) && !(uri.endsWith("auth"))) {
             response.sendRedirect(Guide.getRoute(request, "auth"));

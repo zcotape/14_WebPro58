@@ -18,46 +18,80 @@ import model.personal.Teacher;
  */
 public class AchievementListUtilities {
 
-    public static List<AchievementList> getInformation() {
-
-        List<AchievementList> achievementList = null;
-
+    public static AchievementList getCompetitionInformation(Integer achievement_id) {
         try {
-            String sqlCommand = "SELECT \n"
-                    + "    GROUP_CONCAT(DISTINCT student.th_name) AS 'StudentName', \n"
-                    + "    achievements.achievement_name, \n"
-                    + "    achievements.category, \n"
-                    + "    organizations.organization_name, \n"
-                    + "    achievements.reward, \n"
-                    + "    achievements.date\n"
-                    + "\n"
-                    + "    FROM achievements\n"
-                    + "    JOIN student_achievement\n"
-                    + "    ON (student_achievement.achievement_id = achievements.id)\n"
-                    + "    JOIN student\n"
-                    + "    ON (student.student_id = student_achievement.student_id)\n"
-                    + "    JOIN organization_achievement\n"
-                    + "    ON (organization_achievement.achievement_id = student_achievement.achievement_id)\n"
-                    + "    JOIN organizations\n"
-                    + "    ON (organizations.id = organization_achievement.organization_id)\n"
-                    + "    GROUP BY achievements.achievement_name\n"
-                    + "    ORDER BY achievements.date";
+            String sqlCommand = "SELECT competitions.event_name, competitions.topic, competitions.level, competitions.rank,\n"
+                    + "achievements.achievement_name, achievements.category, achievements.reward, achievements.date\n"
+                    + "FROM achievements\n"
+                    + "JOIN competitions\n"
+                    + "ON (achievements.id = competitions.achievement_id)\n"
+                    + "WHERE achievements.id = ?";
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
+            statement.setInt(1, achievement_id);
 
             ResultSet result = statement.executeQuery();
-            while (result.next()) {
+            if (result.next()) {
                 AchievementList list = new AchievementList();
-                list.setStudent_name(result.getString("StudentName"));
                 list.setAchievement_name(result.getString("achievement_name"));
                 list.setCategory(result.getString("category"));
-                list.setOrganization_name(result.getString("organization_name"));
-                list.setReward(result.getString("reward"));
                 list.setDate(result.getString("date"));
-
-                achievementList.add(list);
+                list.setEvent_name(result.getString("event_name"));
+                list.setLevel(result.getString("level"));
+                list.setRank(result.getString("rank"));
+                list.setReward(result.getString("reward"));
+                list.setTopic(result.getString("topic"));
+                return list;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-            return achievementList;
+    public static AchievementList getAmbassadorInformation(Integer achievement_id) {
+        try {
+            String sqlCommand = "SELECT ambassadors.year,\n"
+                    + "achievements.achievement_name, achievements.category, achievements.reward, achievements.date\n"
+                    + "FROM achievements\n"
+                    + "JOIN ambassadors\n"
+                    + "ON (achievements.id = ambassadors.achievement_id)\n"
+                    + "WHERE achievements.id = ?;";
+            PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
+            statement.setInt(1, achievement_id);
+
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                AchievementList list = new AchievementList();
+                list.setYear(result.getString("year"));
+                list.setAchievement_name(result.getString("achievement_name"));
+                list.setDate(result.getString("date"));
+                return list;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static AchievementList getCertificateInformation(Integer achievement_id) {
+        try {
+            String sqlCommand = "SELECT certs.exp_date,\n"
+                    + "achievements.achievement_name, achievements.category, achievements.reward, achievements.date\n"
+                    + "FROM achievements\n"
+                    + "JOIN certs\n"
+                    + "ON (achievements.id = certs.achievement_id)\n"
+                    + "WHERE achievements.id = ?;";
+            PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
+            statement.setInt(1, achievement_id);
+            System.out.println(achievement_id);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                AchievementList list = new AchievementList();
+                list.setExpire_date(result.getString("exp_date"));
+                list.setAchievement_name(result.getString("achievement_name"));
+                list.setDate(result.getString("date"));
+                return list;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

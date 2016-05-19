@@ -1,7 +1,7 @@
 package controller;
 
 import guide.Guide;
-import model.personal.PersonalUtilities;
+import model.utilities.PersonalUtilities;
 import model.personal.Staff;
 import model.personal.Student;
 import model.personal.Teacher;

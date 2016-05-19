@@ -53,7 +53,7 @@
                     <h3 class="panel-title">Your Achievement | ผลงานของคุณ</h3>
                 </div>
                 <div class="list-group">
-                    <a href="<% out.print(Guide.getRoute(request, "register.completition"));%>" class="list-group-item">
+                    <a href="<% out.print(Guide.getRoute(request, "register.competition"));%>" class="list-group-item">
                         <h4 class="list-group-item-heading">ลงทะเบียนการแข่งขัน</h4>
                     </a>
                     <a href="<% out.print(Guide.getRoute(request, "register.ambassador"));%>" class="list-group-item">
@@ -124,27 +124,29 @@
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Activities</h3>
+                    <h3 class="panel-title">Your Achievement</h3>
                 </div>
                 <div class="list-group">
-                    <a href="<% out.print(Guide.getRoute(request, "register.completition"));%>" class="list-group-item">
+                    <a href="<% out.print(Guide.getRoute(request, "register.competition"));%>" class="list-group-item">
                         <h4 class="list-group-item-heading">ลงทะเบียนการแข่งขัน</h4>
+                    </a>
+                    <a href="<% out.print(Guide.getRoute(request, "achievement.manager"));%>" class="list-group-item">
+                        <h4 class="list-group-item-heading">แก้ไขผลงานของคุณ</h4>
                     </a>
                 </div>
             </div>
         </div>
         <div class="col-xs-12 col-md-6">
-            <form class="form-horizontal" action="result" method="get">
-                <div class="col-lg-12">
-                    <label class="control-label">ค้นหาผลงาน</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for..." name="search_query">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Go!</button>
-                        </span>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Activities</h3>
                 </div>
-            </form>
+                <div class="list-group">
+                    <a href="<% out.print(Guide.getRoute(request, "search"));%>" class="list-group-item">
+                        <h4 class="list-group-item-heading">ค้นหาผลงาน</h4>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

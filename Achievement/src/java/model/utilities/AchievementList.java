@@ -11,7 +11,7 @@ package model.utilities;
  */
 public class AchievementList {
     
-    private String student_name, achievement_name, category, organization_name, reward, date;
+    private String student_name, achievement_name, category, organization_name, reward, date, event_name, level, rank, topic, expire_date, year;
 
     public String getStudent_name() {
         return student_name;
@@ -60,5 +60,54 @@ public class AchievementList {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getEvent_name() {
+        return event_name;
+    }
+
+    public void setEvent_name(String event_name) {
+        this.event_name = event_name;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getExpire_date() {
+        return expire_date;
+    }
+
+    public void setExpire_date(String expire_date) {
+        this.expire_date = expire_date;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+    
     
 }

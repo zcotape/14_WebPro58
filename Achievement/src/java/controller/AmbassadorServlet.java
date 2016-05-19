@@ -15,10 +15,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
 import model.utilities.AchievementUtilities;
 
 @WebServlet(name = "AmbassadorServlet", urlPatterns = "/register.ambassador")
+@MultipartConfig(maxFileSize = 999999999) // config file size 
 public class AmbassadorServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,14 +54,13 @@ public class AmbassadorServlet extends HttpServlet {
 
         // Insert to Achievement Table
         try {
-            String sql_command = "INSERT INTO achievements (achievement_name, date, category, photo, achievement_type, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
+            String sql_command = "INSERT INTO achievements (achievement_name, date, photo, achievement_type, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())";
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setString(1, achievement_name);
             statement.setString(2, publish_date);
-            statement.setString(3, "");
-            statement.setString(5, "2");
+            statement.setString(4, "2");
             if (inputStream != null) {
-                statement.setBlob(4, inputStream);
+                statement.setBlob(3, inputStream);
             }
 
             statement.executeUpdate();
@@ -92,7 +93,8 @@ public class AmbassadorServlet extends HttpServlet {
         }
 
          // Insert to organization_achievement table
-        if (organization_optional != null) {
+        if (!(organization_optional.length() == 0)) {
+            System.out.println("eiei" + organization_optional.length());
             try {
                 String sql_command = "INSERT INTO organizations (organization_name) VALUES (?)";
                 PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
@@ -107,7 +109,7 @@ public class AmbassadorServlet extends HttpServlet {
             String sql_command = "INSERT INTO organization_achievement (achievement_id, organization_id) VALUES (?, ?)";
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sql_command);
             statement.setInt(1, AchievementUtilities.getAchievementID(achievement_name));
-            if(organization_id != 0 && organization_optional == null){
+            if (organization_id != 0 && organization_optional.length() == 0) {
                 statement.setInt(2, organization_id);
 
             } else {

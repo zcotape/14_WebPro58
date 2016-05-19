@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ include file="contains/header.jsp" %>
-
+<% if (session.getAttribute("username") == null) { %>
+<% } else { %>
+<%@ include file="contains/navbar.jsp" %>
+<% } %>
 <div class="container header-top">
     <div class="page-header">
         <h1>Search your achievement name<br><small>ค้นหาชื่อผลงานของคุณ</small></h1>

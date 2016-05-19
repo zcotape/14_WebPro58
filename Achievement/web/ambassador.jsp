@@ -49,8 +49,8 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">วันที่ออกใบประกาศ</label>
-                    <div id="ambassador_publish_date" class="input-group date" data-date-format="mm-dd-yyyy">
-                        <input class="form-control" type="text" name="publish-date" readonly/>
+                    <div id="ambassador_publish_date" class="input-group date" data-date-format="yyyy-mm-dd">
+                        <input class="form-control" type="text" name="publish_date" readonly/>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                 </div>
