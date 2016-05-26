@@ -5,6 +5,7 @@ import database.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.personal.Executive;
 import model.personal.Staff;
 import model.personal.Student;
 import model.personal.Teacher;
@@ -51,6 +52,8 @@ public class PersonalUtilities {
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
             statement.setString(1, password);
             statement.setString(2, username);
+            
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -168,6 +171,45 @@ public class PersonalUtilities {
             PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
             statement.setString(1, staff.getEmail());
             statement.setString(2, staff.getMobile());
+            statement.setString(3, username);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public static Executive getExecutiveInformation(String username) {
+        try {
+            String sqlCommand = "SELECT * FROM it_14.executive WHERE username = ?";
+            PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
+            statement.setString(1, username);
+
+            ResultSet result = statement.executeQuery();
+            if (result.last()) {
+                Executive executive = new Executive();
+                executive.setExecutive_id(result.getString("executive_id"));
+                executive.setTh_name(result.getString("th_name"));
+                executive.setEn_name(result.getString("en_name"));
+                executive.setMobile(result.getString("mobile"));
+                executive.setEmail(result.getString("email"));
+
+                return executive;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public static void updateExecutiveInformation(Executive executive, String username) {
+        try {
+            String sqlCommand = "UPDATE it_14.executive SET email = ?, mobile = ? WHERE username = ?";
+            PreparedStatement statement = DatabaseConnection.getInstance().getConnection().prepareStatement(sqlCommand);
+            statement.setString(1, executive.getEmail());
+            statement.setString(2, executive.getMobile());
             statement.setString(3, username);
 
             statement.executeUpdate();

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import model.personal.Executive;
 
 @WebServlet(name = "AuthenticationServlet", urlPatterns = "/auth")
 public class AuthenticationServlet extends HttpServlet {
@@ -67,6 +68,16 @@ public class AuthenticationServlet extends HttpServlet {
                     session.setAttribute("th_name", student.getTh_name());
                     session.setAttribute("en_name", student.getEn_name());
                     session.setAttribute("email", student.getEmail());
+                }
+            } else if (role_id == 4) {
+                session.setAttribute("role", "executive");
+
+                Executive executive = PersonalUtilities.getExecutiveInformation(username);
+                if (executive != null) {
+                    session.setAttribute("th_name", executive.getTh_name());
+                    session.setAttribute("en_name", executive.getEn_name());
+                    session.setAttribute("email", executive.getEmail());
+                    session.setAttribute("mobile", executive.getMobile());
                 }
 
             } else if (username.equals("") && password.equals("")) {

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import model.personal.Executive;
 
 /**
  * Created by earthz on 3/21/16.
@@ -50,12 +51,18 @@ public class UpdateProfileServlet extends HttpServlet {
             staff.setMobile(mobile);
 
             PersonalUtilities.updateStaffInformation(staff, username);
-        } else {
+        } else if (session.getAttribute("role").equals("teacher")){
             Teacher teacher = new Teacher();
             teacher.setEmail(email);
             teacher.setMobile(mobile);
 
             PersonalUtilities.updateTeacherInformation(teacher, username);
+        } else {
+            Executive executive = new Executive();
+            executive.setEmail(email);
+            executive.setMobile(mobile);
+            
+            PersonalUtilities.updateExecutiveInformation(executive, username);
         }
 
         response.sendRedirect(Guide.getRoute(request, "account"));

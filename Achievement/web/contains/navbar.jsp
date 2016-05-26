@@ -28,7 +28,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="logout">ออกจากระบบ</a></li>
                     </ul>
-                    <% } else if (session.getAttribute("role").equals("staff")) { %>
+                        <% } else if (session.getAttribute("role").equals("staff") || session.getAttribute("role").equals("executive")) { %>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Welcome, <%out.print(session.getAttribute("th_name")); %> <span
                             class="caret"></span></a>

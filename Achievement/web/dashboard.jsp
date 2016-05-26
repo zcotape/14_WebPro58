@@ -81,7 +81,7 @@
     </div>
 </div>
 
-<% } else if (session.getAttribute("role").equals("staff")) {%>
+<% } else if (session.getAttribute("role").equals("staff") || session.getAttribute("role").equals("executive")) {%>
 <div class="container header-top">
     <div class="page-header">
         <h1>Welcome
